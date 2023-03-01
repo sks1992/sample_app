@@ -83,7 +83,7 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                       ),
                       color: Colors.indigoAccent),
-                  child: const Text("SignUp"),
+                  child: const Text("Register"),
                 ),
               ),
             ],
