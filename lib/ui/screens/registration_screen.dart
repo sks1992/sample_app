@@ -16,10 +16,29 @@ class RegistrationScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Stack(
+                children: [
+                  const CircleAvatar(
+                    radius: 64,
+                    backgroundColor: Colors.white,
+                    backgroundImage: NetworkImage(
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8agLYh5KqNIxsU5B0J5d601gO8ubgENaacYEnP6i52Q&s"),
+                  ),
+                  Positioned(
+                    bottom: -10,
+                    right: -10,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.camera_alt),
+                    ),
+                  ),
+                ],
+              ),
               ReusableTextField(
                 labelText: "User Name",
                 controller: controller.usernameController,
@@ -50,6 +69,22 @@ class RegistrationScreen extends StatelessWidget {
                   icon: const Icon(Icons.remove_red_eye),
                 ),
                 prefixIcon: const Icon(Icons.lock),
+              ),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                      color: Colors.indigoAccent),
+                  child: const Text("SignUp"),
+                ),
               ),
             ],
           ),
