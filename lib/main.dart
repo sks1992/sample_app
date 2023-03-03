@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sample_app/app_route.dart';
+import 'package:sample_app/core/bindings/init_bindings.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       ),
       getPages: AppRoute.route,
       debugShowCheckedModeBanner: false,
-      initialRoute: RouteNames.registration,
+      initialRoute: RouteNames.login,
+      initialBinding: InitBinging(),
     );
   }
 }

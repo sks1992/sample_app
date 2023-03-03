@@ -94,7 +94,7 @@ class ReusableTextField extends StatelessWidget {
             inputFormatters: isNumberKeyBoard && !isDecimalReq
                 ? [FilteringTextInputFormatter.digitsOnly]
                 : null,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             style: const TextStyle(color: Colors.black),
             cursorColor: Colors.blue,
             decoration: InputDecoration(
