@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sample_app/core/controllers/auth_controller.dart';
 import 'package:sample_app/core/models/login_model.dart';
 import 'package:sample_app/core/services/auth_services.dart';
+import 'package:sample_app/core/services/shared_pref_service.dart';
 import 'package:sample_app/core/util/helpers.dart';
 
 class LoginController extends GetxController {
+  final _sharedService = Get.find<SharedPrefService>();
   final _authService = Get.find<AuthService>();
+  final _authController=Get.find<AuthController>();
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   var passwordShow = false.obs;
@@ -33,8 +37,8 @@ class LoginController extends GetxController {
     showSaveProgress.value = true;
     var result = await _authService.loginUser(loginModel);
     if (result.isSuccess) {
-      showSnackBar1("Success", result.errorMessages!.toString(),
-          type: SnackBarType.success);
+      _sharedService.storeAuthToken(result.result!.token);
+      _authController.loggedIn.value = true;
     } else {
       showSnackBar1("Failed", result.errorMessages!.toString());
     }
@@ -51,7 +55,6 @@ class LoginController extends GetxController {
       showSnackBar1("Error", "Enter Password");
       return false;
     }
-
     return true;
   }
 }
