@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(RouteNames.registration);
+                      Get.offNamed(RouteNames.registration);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),

@@ -146,7 +146,7 @@ class RegistrationScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(RouteNames.login);
+                      Get.offNamed(RouteNames.login);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
