@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 void hideKeyboard() {
   WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
@@ -52,4 +56,23 @@ void showSnackBar1(String title, String message,
       ),
     ),
   );
+}
+
+CropAspectRatio get imageCropAspectRatio =>
+    const CropAspectRatio(ratioX: 1.0, ratioY: 1.0);
+
+AndroidUiSettings get imageCropAndroidUISettings => AndroidUiSettings(
+    toolbarTitle: 'Crop Image',
+    toolbarColor: Colors.white,
+    toolbarWidgetColor: Colors.black87,
+    initAspectRatio: CropAspectRatioPreset.original,
+    lockAspectRatio: false);
+
+IOSUiSettings get imageCropIosUISettings => IOSUiSettings(
+      title: 'Crop Image',
+      minimumAspectRatio: 1.0,
+    );
+
+String base64String(Uint8List data) {
+  return base64Encode(data);
 }

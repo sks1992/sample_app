@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sample_app/app_route.dart';
 import 'package:sample_app/core/util/helpers.dart';
 import 'package:sample_app/ui/widgets/reusable_text_field.dart';
@@ -25,17 +26,99 @@ class RegistrationScreen extends StatelessWidget {
             children: [
               Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 64,
-                    backgroundColor: Colors.white,
-                    backgroundImage: NetworkImage(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8agLYh5KqNIxsU5B0J5d601gO8ubgENaacYEnP6i52Q&s"),
+                  Obx(
+                    () => controller.profileImage.value == null
+                        ? const CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.white,
+                            backgroundImage: AssetImage("assets/images/no_image.png"),
+                          )
+                        : CircleAvatar(
+                            radius: 64,
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                                MemoryImage(controller.profileImage.value!),
+                          ),
                   ),
                   Positioned(
                     bottom: -10,
                     right: -10,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text("Choose"),
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                  height: Get.height * 0.1,
+                                  child: InkWell(
+                                    onTap: () {
+                                      controller.getImage(ImageSource.camera,
+                                          controller.profileImage);
+                                      Get.back();
+                                    },
+                                    child: Column(
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: Icon(
+                                            Icons.photo_camera,
+                                            color: Colors.grey,
+                                            size: 35,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Camera",
+                                          style: TextStyle(color: Colors.grey),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.1,
+                                  child: InkWell(
+                                    onTap: () {
+                                      controller.getImage(ImageSource.gallery,
+                                          controller.profileImage);
+                                      Get.back();
+                                      Get.back();
+                                    },
+                                    child: Column(
+                                      children: const [
+                                        Padding(
+                                          padding: EdgeInsets.all(4.0),
+                                          child: Icon(
+                                            Icons.image,
+                                            color: Colors.grey,
+                                            size: 35,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Gallery",
+                                          style: TextStyle(color: Colors.grey),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "CLOSE",
+                                    style: TextStyle(color: Colors.black),
+                                  ))
+                            ],
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.camera_alt),
                     ),
                   ),

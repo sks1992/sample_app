@@ -1,12 +1,20 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sample_app/core/models/register_model.dart';
 import 'package:sample_app/core/services/auth_services.dart';
 import 'package:sample_app/core/util/helpers.dart';
 
 class RegistrationController extends GetxController {
+  final _authAPi = Get.find<AuthService>();
+  late final ImagePicker _imagePicker;
+  late final ImageCropper _cropper;
 
-  final _authAPi =Get.find<AuthService>();
+  var profileImage = Rx<Uint8List?>(null);
 
   late TextEditingController usernameController;
   late TextEditingController emailController;
@@ -20,6 +28,8 @@ class RegistrationController extends GetxController {
 
   @override
   void onInit() {
+    _imagePicker = ImagePicker();
+    _cropper = ImageCropper();
     usernameController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
@@ -41,17 +51,22 @@ class RegistrationController extends GetxController {
   Future<void> registerUser() async {
     if (!validateUser()) return;
     var registerModel = RegisterPostModel(
-        userName: usernameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        role: roleController.text);
+      userName: usernameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+      role: roleController.text,
+      base64ImageUrl: profileImage.value == null
+          ? ""
+          : base64String(profileImage.value!),
+    );
 
     showSaveProgress.value = true;
-    var result =await _authAPi.registerUser(registerModel);
-    if(result.isSuccess){
-      showSnackBar1("Success", result.errorMessages!.toString(), type: SnackBarType.success);
-    }else{
-      showSnackBar1("Failed", result.errorMessages!.toString());
+    var result = await _authAPi.registerUser(registerModel);
+    if (result.isSuccess) {
+      showSnackBar1("Success", result.errorMessages!.toString(),
+          type: SnackBarType.success);
+    } else {
+      showSnackBar1("Failed", result.errorMessages.toString());
     }
     showSaveProgress.value = false;
   }
@@ -79,5 +94,24 @@ class RegistrationController extends GetxController {
       return false;
     }
     return true;
+  }
+
+  void getImage(ImageSource imageSource, Rx<Uint8List?> image) async {
+    final selectImageFile = await _imagePicker.pickImage(source: imageSource);
+    if (selectImageFile != null) {
+      CroppedFile? croppedFile = await _cropper.cropImage(
+        sourcePath: selectImageFile.path,
+        aspectRatio: imageCropAspectRatio,
+        maxHeight: 512,
+        maxWidth: 512,
+        uiSettings: [
+          imageCropAndroidUISettings,
+          imageCropIosUISettings,
+        ],
+      );
+      image.value = File(croppedFile!.path).readAsBytesSync();
+    } else {
+      showSnackBar1('Error', 'No Image Selected');
+    }
   }
 }

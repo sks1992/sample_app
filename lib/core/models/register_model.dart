@@ -6,18 +6,21 @@ class RegisterPostModel {
     required this.email,
     required this.password,
     required this.role,
+    required this.base64ImageUrl,
   });
 
   late final String userName;
   late final String email;
   late final String password;
   late final String role;
+  late final String base64ImageUrl;
 
   RegisterPostModel.fromJson(Map<String, dynamic> json) {
     userName = json['userName'];
     email = json['email'];
     password = json['password'];
     role = json['role'];
+    base64ImageUrl = json['base64ImageUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,6 +29,7 @@ class RegisterPostModel {
     _data['email'] = email;
     _data['password'] = password;
     _data['role'] = role;
+    _data['base64ImageUrl'] = base64ImageUrl;
     return _data;
   }
 }
