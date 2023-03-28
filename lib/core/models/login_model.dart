@@ -50,49 +50,57 @@ class LoginResultModel {
   }
 }
 
-class Result {
-  Result({
-    required this.user,
-    required this.token,
+class LoginResult {
+  LoginResult({
+    required this.statusCode,
+    required this.isSuccess,
+    required this.errorMessages,
+    required this.result,
   });
 
-  late final User user;
-  late final String token;
+  late final int statusCode;
+  late final bool isSuccess;
+  late final List<dynamic> errorMessages;
+  late final Result result;
 
-  Result.fromJson(Map<String, dynamic> json) {
-    user = User.fromJson(json['user']);
-    token = json['token'];
+  LoginResult.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    isSuccess = json['isSuccess'];
+    errorMessages = List.castFrom<dynamic, dynamic>(json['errorMessages']);
+    result = Result.fromJson(json['result']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['user'] = user.toJson();
-    _data['token'] = token;
+    _data['statusCode'] = statusCode;
+    _data['isSuccess'] = isSuccess;
+    _data['errorMessages'] = errorMessages;
+    _data['result'] = result.toJson();
     return _data;
   }
 }
 
-class User {
-  User({
+class Result {
+  Result({
     required this.id,
     required this.userName,
     required this.email,
-    required this.password,
-    required this.role,
+    required this.token,
+    required this.pofileImage,
   });
 
   late final int id;
   late final String userName;
   late final String email;
-  late final String password;
-  late final String role;
+  late final String token;
+  late final String pofileImage;
 
-  User.fromJson(Map<String, dynamic> json) {
+  Result.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userName = json['userName'];
     email = json['email'];
-    password = json['password'];
-    role = json['role'];
+    token = json['token'];
+    pofileImage = json['pofileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -100,8 +108,8 @@ class User {
     _data['id'] = id;
     _data['userName'] = userName;
     _data['email'] = email;
-    _data['password'] = password;
-    _data['role'] = role;
+    _data['token'] = token;
+    _data['pofileImage'] = pofileImage;
     return _data;
   }
 }
